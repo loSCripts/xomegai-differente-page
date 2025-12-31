@@ -2,35 +2,38 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Logo Motion Design - Bienvenue & Welcome</title>
     <style>
-        /* 1. FOND BLANC INITIAL AVEC MOTIF À POINTS ATTÉNUÉS */
+        /* 0. RESET & BASE */
+        * {
+            box-sizing: border-box; /* Crucial pour éviter les scrolls horizontaux */
+        }
+
         body {
             margin: 0;
             padding: 0;
-            width: 100vw;
+            width: 100%;
             height: 100vh;
             background-color: #ffffff;
-            
-            /* MOTIF À POINTS GRIS LÉGERS (0.1 opacity) */
             background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1.5px, transparent 1.5px);
             background-size: 20px 20px;
-
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            overflow: hidden;
+            overflow: hidden; 
             font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
         }
 
+        /* 1. STAGE (Animation derrière) */
         .stage {
-            position: relative;
-            width: 100vw;
-            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             display: flex;
             justify-content: center;
             align-items: center;
+            z-index: 1;
         }
 
         /* --- POPUP D'AUTORISATION (Overlay) --- */
@@ -38,128 +41,125 @@
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             background-color: #ffffff;
-            /* On applique les mêmes points atténués sur l'overlay */
             background-image: radial-gradient(circle, rgba(0, 0, 0, 0.1) 1.5px, transparent 1.5px);
             background-size: 20px 20px;
-            
-            z-index: 9999; /* Au-dessus de tout */
+            z-index: 9999; 
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
+            overflow-x: hidden;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
         }
 
         /* --- STYLES DU QUESTIONNAIRE --- */
         #questionnaire-container {
+            margin: auto; 
+            padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
             width: 100%;
-            max-width: 400px;
+            max-width: 450px; /* Largeur optimale sur ordinateur */
+            transition: padding-bottom 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        /* Rehaussement dynamique pour le menu pays */
+        #questionnaire-container.menu-open {
+            padding-bottom: 250px; 
         }
 
         .step {
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 20px;
+            gap: 15px;
             animation: fadeInStep 0.5s ease forwards;
             width: 100%;
         }
 
         .step label {
-            font-size: 20px;
+            font-size: 18px;
             font-weight: 300;
             text-transform: uppercase;
             letter-spacing: 2px;
             color: #000;
+            margin-bottom: 10px;
             text-align: center;
         }
 
-        /* INPUTS CLASSIQUES */
-        .step input[type="text"] {
-            padding: 15px 30px;
+        /* INPUTS MODERNISÉS */
+        .step input[type="text"], 
+        .step input[type="number"] {
+            padding: 15px 25px;
             border-radius: 50px;
-            border: 1px solid #000;
+            border: 1.5px solid #000;
             background: #fff;
             font-family: inherit;
-            font-size: 18px;
+            font-size: 16px;
             text-align: center;
-            width: 80%;
+            width: 100%; /* S'adapte au max-width du container */
+            max-width: 320px;
             outline: none;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-
-        .step input[type="text"]:focus {
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-            border-color: #333;
-        }
-
-        /* --- DESIGN DU MENU DÉROULANT (Custom Select) --- */
-        .custom-select-wrapper {
-            position: relative;
-            width: 80%;
-            user-select: none;
-            font-size: 18px;
-        }
-
-        .custom-select {
-            position: relative;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .custom-select-trigger {
-            position: relative;
-            padding: 15px 30px;
-            border-radius: 50px;
-            border: 1px solid #000;
-            background: #fff;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
             transition: all 0.3s ease;
         }
 
-        .custom-select-trigger span {
-            margin: 0 auto; /* Centrer le texte */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            max-width: 90%;
+        .step input:focus {
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: #333;
+            transform: translateY(-2px);
+        }
+
+        /* Suppression des flèches sur input number */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        /* --- DESIGN DU MENU DÉROULANT --- */
+        .custom-select-wrapper {
+            position: relative;
+            width: 100%;
+            max-width: 320px;
+            user-select: none;
+        }
+
+        .custom-select-trigger {
+            padding: 15px 25px;
+            border-radius: 50px;
+            border: 1.5px solid #000;
+            background: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 10;
         }
 
         .custom-select-trigger:after {
             content: '▼';
-            font-size: 12px;
+            font-size: 10px;
             position: absolute;
             right: 20px;
             transition: transform 0.3s ease;
         }
 
-        .custom-select.open .custom-select-trigger:after {
-            transform: rotate(180deg);
-        }
+        .custom-select.open .custom-select-trigger:after { transform: rotate(180deg); }
 
-        .custom-select.open .custom-select-trigger {
-            border-bottom-left-radius: 0;
-            border-bottom-right-radius: 0;
-            border-bottom-color: transparent;
-        }
-
-        /* CONTENEUR DES OPTIONS */
         .custom-options {
             position: absolute;
-            top: 100%; /* Déroule vers le bas */
+            top: 100%;
             left: 0;
             right: 0;
             background: #fff;
-            border: 1px solid #000;
+            border: 1.5px solid #000;
             border-top: none;
             border-bottom-left-radius: 20px;
             border-bottom-right-radius: 20px;
@@ -167,10 +167,9 @@
             z-index: 100;
             opacity: 0;
             visibility: hidden;
-            pointer-events: none;
             transform: translateY(-10px);
             transition: all 0.3s ease;
-            overflow: hidden; /* Important pour la barre de recherche */
+            overflow: hidden;
             display: flex;
             flex-direction: column;
         }
@@ -178,131 +177,91 @@
         .custom-select.open .custom-options {
             opacity: 1;
             visibility: visible;
-            pointer-events: all;
             transform: translateY(0);
         }
 
-        /* BARRE DE RECHERCHE DANS LE SELECT */
-        .country-search-box {
-            padding: 10px;
-            background-color: #f9f9f9;
-            border-bottom: 1px solid #eee;
-        }
-
+        .country-search-box { padding: 10px; background: #f9f9f9; }
         .country-search-box input {
             width: 100%;
-            padding: 8px;
+            padding: 8px 15px;
             border: 1px solid #ccc;
-            border-radius: 5px;
+            border-radius: 20px;
             font-size: 14px;
-            outline: none;
-            box-sizing: border-box; /* Important pour ne pas dépasser */
         }
 
-        /* LISTE DÉFILANTE */
-        .options-list {
-            max-height: 200px;
-            overflow-y: auto;
-        }
-
-        .options-list::-webkit-scrollbar {
-            width: 6px;
-        }
-        .options-list::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
-        }
-
+        .options-list { max-height: 200px; overflow-y: auto; }
         .custom-option {
             padding: 12px 20px;
             cursor: pointer;
-            transition: background 0.2s ease;
             display: flex;
             align-items: center;
-            justify-content: flex-start; /* Alignement à gauche pour la liste */
             gap: 10px;
             border-top: 1px solid #f0f0f0;
-            font-size: 16px;
+            font-size: 15px;
         }
-
-        .custom-option:hover {
-            background-color: #f7f7f7;
-            color: #000;
-            font-weight: 500;
-        }
-
-        .custom-option.selected {
-            background-color: #000;
-            color: #fff;
-        }
-        
-        /* Cacher les options filtrées */
-        .custom-option.hidden {
-            display: none;
-        }
+        .custom-option:hover { background: #f7f7f7; }
 
         /* --- BOUTONS --- */
         .next-btn {
-            padding: 15px 40px;
+            padding: 14px 45px;
             border-radius: 50px;
             border: none;
             cursor: pointer;
             background-color: #000000;
             color: #ffffff;
-            font-family: Arial, sans-serif;
-            font-size: 14px;
-            font-weight: normal;
+            font-size: 13px;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.2s ease, opacity 0.3s ease, background-color 0.3s ease;
-            margin-top: 20px;
-        }
-
-        .next-btn:hover {
-            transform: scale(1.05);
+            letter-spacing: 2px;
+            transition: all 0.3s ease;
+            margin-top: 10px;
         }
 
         .next-btn:disabled {
-            background-color: #ccc;
+            background-color: #e0e0e0;
+            color: #999;
             cursor: not-allowed;
-            transform: none;
-            opacity: 0.7;
         }
 
+        /* --- MESSAGE FINAL ET BOUTON START --- */
+        #final-message {
+            font-size: 22px;
+            font-weight: 300;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #000;
+            margin: auto 0 20px 0;
+            display: none;
+            text-align: center;
+        }
+
+        #start-btn {
+            padding: 18px 55px;
+            border-radius: 50px;
+            border: none;
+            cursor: pointer;
+            background-color: #000;
+            color: #fff;
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            display: none;
+            margin-bottom: auto;
+            transition: transform 0.3s ease;
+        }
+
+        #start-btn:hover { transform: scale(1.05); }
+
         @keyframes fadeInStep {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- STYLE DU BOUTON CONTINUER (Final) --- */
-        #start-btn {
-            padding: 20px 60px;
-            border-radius: 50px; 
-            border: none;
-            cursor: pointer;
-            background-color: #000000;
-            color: #ffffff;
-            font-family: Arial, sans-serif;
-            font-size: 16px;
-            font-weight: normal;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            transition: transform 0.2s ease;
-            display: none; 
-        }
-
-        #start-btn:hover {
-            transform: scale(1.05);
-        }
-
-        /* 2. LE LOGO SVG INITIAL (NOIR) - Centré */
+        /* 2. LOGOS & ANIMATIONS (Inchangés) */
         .logo-svg-initial {
             width: 70vmin;
             height: 70vmin;
             position: absolute;
-            overflow: visible;
             z-index: 1;
-            /* Centrage absolu */
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
@@ -320,477 +279,226 @@
             stroke-dashoffset: var(--length);
         }
         
-        /* DÉCLENCHEURS D'ANIMATION */
         body.started .logo-shape-initial {
-            animation: 
-                drawPath 3s cubic-bezier(0.5, 0, 0.3, 1) forwards,
-                fillInBlack 0.5s ease-out 2.8s forwards,
-                shrinkToBall 0.4s ease-in 4s forwards;
+            animation: drawPath 3s cubic-bezier(0.5, 0, 0.3, 1) forwards, fillInBlack 0.5s ease-out 2.8s forwards, shrinkToBall 0.4s ease-in 4s forwards;
         }
 
-        /* 3. LA BOULE NOIRE (Transition) */
         .black-ball {
             position: absolute;
-            width: 6vmin;  
-            height: 6vmin;
+            width: 6vmin; height: 6vmin;
             background-color: #000000;
             border-radius: 50%;
             z-index: 20;
             transform: scale(0);
-            top: 50%;
-            left: 50%;
-            margin-top: -3vmin;
-            margin-left: -3vmin;
+            top: 50%; left: 50%;
+            margin-top: -3vmin; margin-left: -3vmin;
         }
 
-        body.started .black-ball {
-            animation: ballSequence 2s linear 4s forwards;
-        }
+        body.started .black-ball { animation: ballSequence 2s linear 4s forwards; }
 
-        /* 4. SCÈNE FINALE */
-        .final-scene {
-            position: absolute;
-            z-index: 30;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            pointer-events: none;
-        }
-
-        /* --- LOGO DU HAUT --- */
-        .final-logo-container {
-            position: absolute;
-            top: 50%; 
-            left: 50%;
-            transform: translate(-50%, -35vmin); 
-            width: 15vmin;
-            height: auto;
-            opacity: 0;
-        }
-
-        body.started .final-logo-container {
-            animation: fadeInSimple 0.5s ease-out 6s forwards;
-        }
+        .final-scene { position: absolute; z-index: 30; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; }
+        .final-logo-container { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -35vmin); width: 15vmin; height: auto; opacity: 0; }
+        body.started .final-logo-container { animation: fadeInSimple 0.5s ease-out 6s forwards; }
 
         .logo-shape-white {
-            fill: transparent;
-            stroke: #ffffff;
-            stroke-width: 40px;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            stroke-dasharray: var(--length);
-            stroke-dashoffset: var(--length);
+            fill: transparent; stroke: #ffffff; stroke-width: 40px; stroke-linecap: round; stroke-linejoin: round;
+            stroke-dasharray: var(--length); stroke-dashoffset: var(--length);
         }
+        body.started .logo-shape-white { animation: drawPath 2s cubic-bezier(0.5, 0, 0.3, 1) 6.5s forwards, fillInWhite 1s ease-out 8s forwards; }
 
-        body.started .logo-shape-white {
-            animation: 
-                drawPath 2s cubic-bezier(0.5, 0, 0.3, 1) 6.5s forwards,
-                fillInWhite 1s ease-out 8s forwards;
-        }
+        .text-center-wrapper { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 80vmin; height: 25vmin; display: flex; justify-content: center; align-items: center; }
+        .text-svg { position: absolute; width: 100%; height: auto; overflow: visible; }
+        .text-style { font-family: inherit; font-size: 80px; font-weight: 300; letter-spacing: 5px; text-transform: uppercase; fill: transparent; stroke: #ffffff; stroke-width: 1px; stroke-dasharray: 600; stroke-dashoffset: 600; }
 
-        /* --- ZONE DE TEXTE CENTRALE --- */
-        .text-center-wrapper {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80vmin;
-            height: 25vmin;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .text-svg {
-            position: absolute;
-            width: 100%;
-            height: auto;
-            overflow: visible;
-        }
-
-        .text-style {
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-            font-size: 80px; 
-            font-weight: 300;
-            letter-spacing: 5px; 
-            text-transform: uppercase;
-            fill: transparent;
-            stroke: #ffffff;
-            stroke-width: 1px;
-            stroke-dasharray: 600;
-            stroke-dashoffset: 600;
-        }
-
-        body.started .text-bienvenue {
-            animation: 
-                drawText 2.5s ease-out 5.5s forwards,
-                fillInWhiteText 1s ease-out 7.5s forwards,
-                fadeOut 0.5s ease-in 9.5s forwards;
-        }
-
+        body.started .text-bienvenue { animation: drawText 2.5s ease-out 5.5s forwards, fillInWhiteText 1s ease-out 7.5s forwards, fadeOut 0.5s ease-in 9.5s forwards; }
         .text-welcome { opacity: 0; }
-
-        body.started .text-welcome {
-            animation:
-                appearInstant 0.1s linear 10s forwards,
-                drawText 2.5s ease-out 10s forwards,
-                fillInWhiteText 1s ease-out 12s forwards;
-        }
-
-
-        /* ========================
-           KEYFRAMES
-           ======================== */
+        body.started .text-welcome { animation: appearInstant 0.1s linear 10s forwards, drawText 2.5s ease-out 10s forwards, fillInWhiteText 1s ease-out 12s forwards; }
 
         @keyframes drawPath { to { stroke-dashoffset: 0; } }
         @keyframes drawText { to { stroke-dashoffset: 0; } }
-
         @keyframes fillInBlack { from { fill: transparent; } to { fill: #000000; stroke-width: 0; } }
         @keyframes fillInWhite { from { fill: transparent; } to { fill: #ffffff; stroke-width: 0; } }
         @keyframes fillInWhiteText { to { fill: #ffffff; } }
-
-        @keyframes shrinkToBall {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(0); opacity: 1; } 
-        }
-
+        @keyframes shrinkToBall { 0% { transform: scale(1); opacity: 1; } 100% { transform: scale(0); opacity: 1; } }
         @keyframes fadeInSimple { to { opacity: 1; } }
         @keyframes fadeOut { from { opacity: 1; } to { opacity: 0; } }
         @keyframes appearInstant { to { opacity: 1; } }
+        @keyframes ballSequence { 0% { transform: scale(0); } 20% { transform: scale(1); } 45% { transform: scale(1); } 70% { transform: scale(15.5); } 100% { transform: scale(15.5); } }
 
-        @keyframes ballSequence {
-            0% { transform: scale(0); }   
-            20% { transform: scale(1); }  
-            45% { transform: scale(1); }  
-            70% { transform: scale(15.5); } 
-            100% { transform: scale(15.5); }
+        /* MEDIA QUERIES MOBILE */
+        @media (max-width: 600px) {
+            .text-style { font-size: 45px; letter-spacing: 3px; }
+            #questionnaire-container { padding: 15px; }
+            .step label { font-size: 16px; }
+            .step input { font-size: 15px; padding: 12px 20px; }
+            #final-message { font-size: 18px; }
         }
-
     </style>
 </head>
 <body>
 
-    <!-- POPUP D'AUTORISATION + QUESTIONNAIRE -->
     <div id="start-overlay">
-        
-        <!-- Conteneur du Questionnaire -->
         <div id="questionnaire-container">
-            
-            <!-- Étape 1 : Identité (Nom & Prénom) -->
+            <!-- Étape 1 : Identité -->
             <div class="step" id="step-1">
-                <label>Votre Identité</label>
+                <label>Qui êtes-vous ?</label>
                 <input type="text" id="input-nom" placeholder="Votre Nom" autocomplete="off" oninput="checkInputs(1)">
-                <input type="text" id="input-prenom" placeholder="Votre Prénom" autocomplete="off" oninput="checkInputs(1)" style="margin-top: 15px;">
+                <input type="text" id="input-prenom" placeholder="Votre Prénom" autocomplete="off" oninput="checkInputs(1)">
                 <button class="next-btn" id="btn-1" onclick="nextStep(1)" disabled>SUIVANT</button>
             </div>
 
-            <!-- Étape 2 : Pseudo -->
+            <!-- Étape 2 : Age & Pseudo -->
             <div class="step" id="step-2" style="display: none;">
-                <label for="input-pseudo">Votre Pseudo</label>
-                <input type="text" id="input-pseudo" placeholder="Choisissez un pseudo" autocomplete="off" oninput="checkInputs(2)">
+                <label>Profil</label>
+                <input type="number" id="input-age" placeholder="Votre Âge" min="1" max="120" oninput="checkInputs(2)">
+                <input type="text" id="input-pseudo" placeholder="Votre Pseudo" autocomplete="off" oninput="checkInputs(2)">
                 <button class="next-btn" id="btn-2" onclick="nextStep(2)" disabled>SUIVANT</button>
             </div>
 
-            <!-- Étape 3 : Pays (Custom Select avec Recherche) -->
+            <!-- Étape 3 : Pays -->
             <div class="step" id="step-3" style="display: none;">
-                <label for="input-pays-hidden">Votre Pays</label>
-                
-                <!-- Input caché pour stocker la valeur -->
+                <label>Votre Pays</label>
                 <input type="hidden" id="input-pays" value="">
-
-                <!-- Structure Custom Select -->
                 <div class="custom-select-wrapper">
                     <div class="custom-select" id="country-select">
                         <div class="custom-select-trigger" id="country-trigger">
                             <span>-- Choisissez --</span>
                         </div>
                         <div class="custom-options">
-                            <!-- Barre de recherche -->
                             <div class="country-search-box">
                                 <input type="text" id="country-search-input" placeholder="Rechercher..." autocomplete="off">
                             </div>
-                            <!-- Liste des pays -->
-                            <div class="options-list">
-                                <!-- Europe -->
-                                <div class="custom-option" data-value="FR">🇫🇷 France</div>
-                                <div class="custom-option" data-value="BE">🇧🇪 Belgique</div>
-                                <div class="custom-option" data-value="CH">🇨🇭 Suisse</div>
-                                <div class="custom-option" data-value="DE">🇩🇪 Allemagne</div>
-                                <div class="custom-option" data-value="GB">🇬🇧 Royaume-Uni</div>
-                                <div class="custom-option" data-value="ES">🇪🇸 Espagne</div>
-                                <div class="custom-option" data-value="IT">🇮🇹 Italie</div>
-                                <div class="custom-option" data-value="PT">🇵🇹 Portugal</div>
-                                <div class="custom-option" data-value="NL">🇳🇱 Pays-Bas</div>
-                                <div class="custom-option" data-value="SE">🇸🇪 Suède</div>
-                                <div class="custom-option" data-value="NO">🇳🇴 Norvège</div>
-                                <div class="custom-option" data-value="DK">🇩🇰 Danemark</div>
-                                <div class="custom-option" data-value="FI">🇫🇮 Finlande</div>
-                                <div class="custom-option" data-value="PL">🇵🇱 Pologne</div>
-                                <div class="custom-option" data-value="GR">🇬🇷 Grèce</div>
-                                <div class="custom-option" data-value="IE">🇮🇪 Irlande</div>
-                                <div class="custom-option" data-value="LU">🇱🇺 Luxembourg</div>
-                                <div class="custom-option" data-value="MC">🇲🇨 Monaco</div>
-                                <div class="custom-option" data-value="AT">🇦🇹 Autriche</div>
-                                <div class="custom-option" data-value="UA">🇺🇦 Ukraine</div>
-                                <div class="custom-option" data-value="RU">🇷🇺 Russie</div>
-
-                                <!-- Amérique -->
-                                <div class="custom-option" data-value="CA">🇨🇦 Canada</div>
-                                <div class="custom-option" data-value="US">🇺🇸 États-Unis</div>
-                                <div class="custom-option" data-value="MX">🇲🇽 Mexique</div>
-                                <div class="custom-option" data-value="BR">🇧🇷 Brésil</div>
-                                <div class="custom-option" data-value="AR">🇦🇷 Argentine</div>
-                                <div class="custom-option" data-value="CO">🇨🇴 Colombie</div>
-                                <div class="custom-option" data-value="CL">🇨🇱 Chili</div>
-                                <div class="custom-option" data-value="PE">🇵🇪 Pérou</div>
-
-                                <!-- Afrique -->
-                                <div class="custom-option" data-value="DZ">🇩🇿 Algérie</div>
-                                <div class="custom-option" data-value="MA">🇲🇦 Maroc</div>
-                                <div class="custom-option" data-value="TN">🇹🇳 Tunisie</div>
-                                <div class="custom-option" data-value="SN">🇸🇳 Sénégal</div>
-                                <div class="custom-option" data-value="CI">🇨🇮 Côte d'Ivoire</div>
-                                <div class="custom-option" data-value="CM">🇨🇲 Cameroun</div>
-                                <div class="custom-option" data-value="NG">🇳🇬 Nigéria</div>
-                                <div class="custom-option" data-value="ZA">🇿🇦 Afrique du Sud</div>
-                                <div class="custom-option" data-value="EG">🇪🇬 Égypte</div>
-                                <div class="custom-option" data-value="ML">🇲🇱 Mali</div>
-                                <div class="custom-option" data-value="GA">🇬🇦 Gabon</div>
-                                <div class="custom-option" data-value="CD">🇨🇩 RDC</div>
-
-                                <!-- Asie / Océanie -->
-                                <div class="custom-option" data-value="CN">🇨🇳 Chine</div>
-                                <div class="custom-option" data-value="JP">🇯🇵 Japon</div>
-                                <div class="custom-option" data-value="KR">🇰🇷 Corée du Sud</div>
-                                <div class="custom-option" data-value="IN">🇮🇳 Inde</div>
-                                <div class="custom-option" data-value="TH">🇹🇭 Thaïlande</div>
-                                <div class="custom-option" data-value="VN">🇻🇳 Vietnam</div>
-                                <div class="custom-option" data-value="ID">🇮🇩 Indonésie</div>
-                                <div class="custom-option" data-value="AU">🇦🇺 Australie</div>
-                                <div class="custom-option" data-value="NZ">🇳🇿 Nouvelle-Zélande</div>
-                                <div class="custom-option" data-value="TR">🇹🇷 Turquie</div>
-                                <div class="custom-option" data-value="SA">🇸🇦 Arabie Saoudite</div>
-                                <div class="custom-option" data-value="AE">🇦🇪 Émirats Arabes Unis</div>
-                                <div class="custom-option" data-value="IL">🇮🇱 Israël</div>
-                                <div class="custom-option" data-value="LB">🇱🇧 Liban</div>
-
-                                <!-- Autre -->
-                                <div class="custom-option" data-value="autre">🏳️ Autre</div>
+                            <div class="options-list" id="country-list">
+                                <!-- Liste générée par JS pour plus de propreté -->
                             </div>
                         </div>
                     </div>
                 </div>
-
                 <button class="next-btn" id="btn-3" onclick="nextStep(3)" disabled>VALIDER</button>
             </div>
         </div>
 
-        <!-- Bouton FINAL qui lance l'expérience (caché au début) -->
+        <h2 id="final-message">Configuration terminée !</h2>
         <button id="start-btn">CONTINUER</button>
     </div>
 
-    <!-- AUDIO -->
     <audio id="introSound" src="son.mp3"></audio>
 
     <div class="stage">
-        <!-- 1. La Boule de transition -->
         <div class="black-ball"></div>
-
-        <!-- 2. Le Logo SVG Original (Noir, début) -->
-        <svg class="logo-svg-initial" version="1.0" xmlns="http://www.w3.org/2000/svg"
-             viewBox="0 0 660.000000 669.000000" preserveAspectRatio="xMidYMid meet">
+        <svg class="logo-svg-initial" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660.000000 669.000000" preserveAspectRatio="xMidYMid meet">
             <g transform="translate(0.000000,669.000000) scale(0.100000,-0.100000)">
-                <path class="logo-shape-initial measure-length" d="M3553 5465 c131 -18 267 -48 350 -76 107 -37 283 -125 389 -194 121
-                -80 299 -250 382 -365 121 -168 215 -387 258 -603 29 -145 31 -421 4 -564 -42
-                -228 -93 -353 -233 -563 -88 -132 -371 -513 -669 -900 -82 -107 -162 -212
-                -178 -232 l-28 -37 99 -123 c55 -68 175 -220 268 -338 92 -118 181 -232 197
-                -253 l30 -37 -245 0 -245 0 -154 201 c-84 111 -161 211 -170 223 l-18 21 -17
-                -21 c-10 -12 -87 -110 -171 -218 l-154 -196 -284 0 c-226 0 -284 3 -277 13 4
-                6 82 107 173 222 455 577 521 663 990 1295 366 492 417 564 464 658 127 254
-                151 586 66 901 -31 114 -128 302 -203 396 -153 189 -385 332 -626 386 -112 24
-                -361 26 -481 3 -196 -37 -406 -144 -552 -282 -232 -219 -350 -512 -352 -872
-                -1 -163 21 -289 75 -438 53 -145 117 -244 449 -687 414 -554 532 -717 523
-                -725 -4 -5 -330 -11 -723 -15 l-715 -6 -153 203 -153 203 438 5 c241 3 443 9
-                450 13 8 5 -19 46 -88 130 -236 287 -450 589 -508 719 -44 97 -88 254 -107
-                381 -22 150 -15 409 15 550 101 474 377 834 810 1056 165 84 345 137 586 170
-                102 14 374 12 488 -4z m1389 -3012 l196 -6 -67 -86 c-37 -47 -107 -139 -156
-                -203 l-87 -118 -274 0 c-151 0 -274 3 -274 6 0 3 55 71 123 153 67 81 142 172
-                167 203 l45 57 66 1 c36 0 154 -3 261 -7z"/>
+                <path class="logo-shape-initial measure-length" d="M3553 5465 c131 -18 267 -48 350 -76 107 -37 283 -125 389 -194 121 -80 299 -250 382 -365 121 -168 215 -387 258 -603 29 -145 31 -421 4 -564 -42 -228 -93 -353 -233 -563 -88 -132 -371 -513 -669 -900 -82 -107 -162 -212 -178 -232 l-28 -37 99 -123 c55 -68 175 -220 268 -338 92 -118 181 -232 197 -253 l30 -37 -245 0 -245 0 -154 201 c-84 111 -161 211 -170 223 l-18 21 -17 -21 c-10 -12 -87 -110 -171 -218 l-154 -196 -284 0 c-226 0 -284 3 -277 13 4 6 82 107 173 222 455 577 521 663 990 1295 366 492 417 564 464 658 127 254 151 586 66 901 -31 114 -128 302 -203 396 -153 189 -385 332 -626 386 -112 24 -361 26 -481 3 -196 -37 -406 -144 -552 -282 -232 -219 -350 -512 -352 -872 -1 -163 21 -289 75 -438 53 -145 117 -244 449 -687 414 -554 532 -717 523 -725 -4 -5 -330 -11 -723 -15 l-715 -6 -153 203 -153 203 438 5 c241 3 443 9 450 13 8 5 -19 46 -88 130 -236 287 -450 589 -508 719 -44 97 -88 254 -107 381 -22 150 -15 409 15 550 101 474 377 834 810 1056 165 84 345 137 586 170 102 14 374 12 488 -4z m1389 -3012 l196 -6 -67 -86 c-37 -47 -107 -139 -156 -203 l-87 -118 -274 0 c-151 0 -274 3 -274 6 0 3 55 71 123 153 67 81 142 172 167 203 l45 57 66 1 c36 0 154 -3 261 -7z"/>
             </g>
         </svg>
 
-        <!-- 3. SCÈNE FINALE -->
         <div class="final-scene">
             <div class="final-logo-container">
-                <svg version="1.0" xmlns="http://www.w3.org/2000/svg"
-                     viewBox="0 0 660.000000 669.000000" preserveAspectRatio="xMidYMid meet">
+                <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660.000000 669.000000" preserveAspectRatio="xMidYMid meet">
                     <g transform="translate(0.000000,669.000000) scale(0.100000,-0.100000)">
-                        <path class="logo-shape-white measure-length" d="M3553 5465 c131 -18 267 -48 350 -76 107 -37 283 -125 389 -194 121
-                        -80 299 -250 382 -365 121 -168 215 -387 258 -603 29 -145 31 -421 4 -564 -42
-                        -228 -93 -353 -233 -563 -88 -132 -371 -513 -669 -900 -82 -107 -162 -212
-                        -178 -232 l-28 -37 99 -123 c55 -68 175 -220 268 -338 92 -118 181 -232 197
-                        -253 l30 -37 -245 0 -245 0 -154 201 c-84 111 -161 211 -170 223 l-18 21 -17
-                        -21 c-10 -12 -87 -110 -171 -218 l-154 -196 -284 0 c-226 0 -284 3 -277 13 4
-                        6 82 107 173 222 455 577 521 663 990 1295 366 492 417 564 464 658 127 254
-                        151 586 66 901 -31 114 -128 302 -203 396 -153 189 -385 332 -626 386 -112 24
-                        -361 26 -481 3 -196 -37 -406 -144 -552 -282 -232 -219 -350 -512 -352 -872
-                        -1 -163 21 -289 75 -438 53 -145 117 -244 449 -687 414 -554 532 -717 523
-                        -725 -4 -5 -330 -11 -723 -15 l-715 -6 -153 203 -153 203 438 5 c241 3 443 9
-                        450 13 8 5 -19 46 -88 130 -236 287 -450 589 -508 719 -44 97 -88 254 -107
-                        381 -22 150 -15 409 15 550 101 474 377 834 810 1056 165 84 345 137 586 170
-                        102 14 374 12 488 -4z m1389 -3012 l196 -6 -67 -86 c-37 -47 -107 -139 -156
-                        -203 l-87 -118 -274 0 c-151 0 -274 3 -274 6 0 3 55 71 123 153 67 81 142 172
-                        167 203 l45 57 66 1 c36 0 154 -3 261 -7z"/>
+                        <path class="logo-shape-white measure-length" d="M3553 5465 c131 -18 267 -48 350 -76 107 -37 283 -125 389 -194 121 -80 299 -250 382 -365 121 -168 215 -387 258 -603 29 -145 31 -421 4 -564 -42 -228 -93 -353 -233 -563 -88 -132 -371 -513 -669 -900 -82 -107 -162 -212 -178 -232 l-28 -37 99 -123 c55 -68 175 -220 268 -338 92 -118 181 -232 197 -253 l30 -37 -245 0 -245 0 -154 201 c-84 111 -161 211 -170 223 l-18 21 -17 -21 c-10 -12 -87 -110 -171 -218 l-154 -196 -284 0 c-226 0 -284 3 -277 13 4 6 82 107 173 222 455 577 521 663 990 1295 366 492 417 564 464 658 127 254 151 586 66 901 -31 114 -128 302 -203 396 -153 189 -385 332 -626 386 -112 24 -361 26 -481 3 -196 -37 -406 -144 -552 -282 -232 -219 -350 -512 -352 -872 -1 -163 21 -289 75 -438 53 -145 117 -244 449 -687 414 -554 532 -717 523 -725 -4 -5 -330 -11 -723 -15 l-715 -6 -153 203 -153 203 438 5 c241 3 443 9 450 13 8 5 -19 46 -88 130 -236 287 -450 589 -508 719 -44 97 -88 254 -107 381 -22 150 -15 409 15 550 101 474 377 834 810 1056 165 84 345 137 586 170 102 14 374 12 488 -4z m1389 -3012 l196 -6 -67 -86 c-37 -47 -107 -139 -156 -203 l-87 -118 -274 0 c-151 0 -274 3 -274 6 0 3 55 71 123 153 67 81 142 172 167 203 l45 57 66 1 c36 0 154 -3 261 -7z"/>
                     </g>
                 </svg>
             </div>
-
             <div class="text-center-wrapper">
                 <svg class="text-svg" viewBox="0 0 500 100">
-                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="text-style text-bienvenue">
-                        Bienvenue
-                    </text>
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="text-style text-bienvenue">Bienvenue</text>
                 </svg>
                 <svg class="text-svg" viewBox="0 0 500 100">
-                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="text-style text-welcome">
-                        Welcome
-                    </text>
+                    <text x="50%" y="50%" text-anchor="middle" dominant-baseline="central" class="text-style text-welcome">Welcome</text>
                 </svg>
             </div>
         </div>
     </div>
 
     <script>
-        // Fonction pour vérifier les champs
+        const countries = [
+            {n: "Afghanistan", c: "AF", d: "🇦🇫"}, {n: "Afrique du Sud", c: "ZA", d: "🇿🇦"}, {n: "Albanie", c: "AL", d: "🇦🇱"}, {n: "Algérie", c: "DZ", d: "🇩🇿"},
+            {n: "Allemagne", c: "DE", d: "🇩🇪"}, {n: "Andorre", c: "AD", d: "🇦🇩"}, {n: "Angola", c: "AO", d: "🇦🇴"}, {n: "Arabie saoudite", c: "SA", d: "🇸🇦"},
+            {n: "Argentine", c: "AR", d: "🇦🇷"}, {n: "Australie", c: "AU", d: "🇦🇺"}, {n: "Autriche", c: "AT", d: "🇦🇹"}, {n: "Belgique", c: "BE", d: "🇧🇪"},
+            {n: "Brésil", c: "BR", d: "🇧🇷"}, {n: "Canada", c: "CA", d: "🇨🇦"}, {n: "Chili", c: "CL", d: "🇨🇱"}, {n: "Chine", c: "CN", d: "🇨🇳"},
+            {n: "Côte d'Ivoire", c: "CI", d: "🇨🇮"}, {n: "Danemark", c: "DK", d: "🇩🇰"}, {n: "Égypte", c: "EG", d: "🇪🇬"}, {n: "Espagne", c: "ES", d: "🇪🇸"},
+            {n: "États-Unis", c: "US", d: "🇺🇸"}, {n: "Finlande", c: "FI", d: "🇫🇮"}, {n: "France", c: "FR", d: "🇫🇷"}, {n: "Grèce", c: "GR", d: "🇬🇷"},
+            {n: "Inde", c: "IN", d: "🇮🇳"}, {n: "Italie", c: "IT", d: "🇮🇹"}, {n: "Japon", c: "JP", d: "🇯🇵"}, {n: "Maroc", c: "MA", d: "🇲🇦"},
+            {n: "Mexique", c: "MX", d: "🇲🇽"}, {n: "Monaco", c: "MC", d: "🇲🇨"}, {n: "Norvège", c: "NO", d: "🇳🇴"}, {n: "Pays-Bas", c: "NL", d: "🇳🇱"},
+            {n: "Portugal", c: "PT", d: "🇵🇹"}, {n: "Royaume-Uni", c: "GB", d: "🇬🇧"}, {n: "Russie", c: "RU", d: "🇷🇺"}, {n: "Sénégal", c: "SN", d: "🇸🇳"},
+            {n: "Suisse", c: "CH", d: "🇨🇭"}, {n: "Tunisie", c: "TN", d: "🇹🇳"}, {n: "Turquie", c: "TR", d: "🇹🇷"}, {n: "Viêt Nam", c: "VN", d: "🇻🇳"},
+            {n: "Autre", c: "autre", d: "🏳️"}
+        ];
+
         function checkInputs(step) {
             let isValid = false;
-            
             if (step === 1) {
-                const nom = document.getElementById('input-nom').value.trim();
-                const prenom = document.getElementById('input-prenom').value.trim();
-                isValid = (nom !== "" && prenom !== "");
+                isValid = document.getElementById('input-nom').value.trim() !== "" && document.getElementById('input-prenom').value.trim() !== "";
             } else if (step === 2) {
-                const pseudo = document.getElementById('input-pseudo').value.trim();
-                isValid = (pseudo !== "");
+                isValid = document.getElementById('input-age').value > 0 && document.getElementById('input-pseudo').value.trim() !== "";
             } else if (step === 3) {
-                const pays = document.getElementById('input-pays').value;
-                isValid = (pays !== "");
+                isValid = document.getElementById('input-pays').value !== "";
             }
-
             document.getElementById('btn-' + step).disabled = !isValid;
         }
 
-        // Fonction pour passer les étapes
         function nextStep(currentStep) {
             document.getElementById('step-' + currentStep).style.display = 'none';
-
             if (currentStep < 3) {
-                const next = currentStep + 1;
-                document.getElementById('step-' + next).style.display = 'flex';
+                document.getElementById('step-' + (currentStep + 1)).style.display = 'flex';
             } else {
                 document.getElementById('questionnaire-container').style.display = 'none';
+                document.getElementById('final-message').style.display = 'block';
                 document.getElementById('start-btn').style.display = 'block';
             }
         }
 
         document.addEventListener("DOMContentLoaded", function() {
-            // --- GESTION MENU DÉROULANT CUSTOM ---
+            const list = document.getElementById('country-list');
+            countries.forEach(p => {
+                const div = document.createElement('div');
+                div.className = 'custom-option';
+                div.innerHTML = `${p.d} ${p.n}`;
+                div.onclick = () => selectCountry(p.n, p.c);
+                list.appendChild(div);
+            });
+
             const trigger = document.getElementById('country-trigger');
             const wrapper = document.getElementById('country-select');
-            const optionsList = document.querySelector('.options-list');
-            const options = document.querySelectorAll('.custom-option');
-            const hiddenInput = document.getElementById('input-pays');
-            const triggerSpan = trigger.querySelector('span');
-            const searchInput = document.getElementById('country-search-input');
+            const qContainer = document.getElementById('questionnaire-container');
+            const search = document.getElementById('country-search-input');
 
-            // Ouvrir/Fermer
-            trigger.addEventListener('click', function(e) {
+            trigger.onclick = (e) => {
                 e.stopPropagation();
-                wrapper.classList.toggle('open');
-                
-                // Si ouvert, focus sur la recherche
-                if (wrapper.classList.contains('open')) {
-                    searchInput.value = ''; // Reset recherche
-                    filterOptions(''); // Reset filtre
-                    searchInput.focus();
-                }
-            });
+                const isOpen = wrapper.classList.toggle('open');
+                qContainer.classList.toggle('menu-open', isOpen);
+                if (isOpen) search.focus();
+            };
 
-            // Fermer si clic ailleurs
-            document.addEventListener('click', function(e) {
-                if (!wrapper.contains(e.target)) {
-                    wrapper.classList.remove('open');
-                }
-            });
-
-            // Fonction de filtrage
-            function filterOptions(query) {
-                const filter = query.toUpperCase();
-                options.forEach(option => {
-                    const text = option.innerText.toUpperCase();
-                    if (text.indexOf(filter) > -1) {
-                        option.classList.remove('hidden');
-                    } else {
-                        option.classList.add('hidden');
-                    }
+            search.oninput = (e) => {
+                const filter = e.target.value.toUpperCase();
+                document.querySelectorAll('.custom-option').forEach(opt => {
+                    opt.style.display = opt.innerText.toUpperCase().includes(filter) ? 'flex' : 'none';
                 });
+            };
+
+            function selectCountry(name, code) {
+                document.getElementById('country-trigger').querySelector('span').innerText = name;
+                document.getElementById('input-pays').value = code;
+                wrapper.classList.remove('open');
+                qContainer.classList.remove('menu-open');
+                checkInputs(3);
             }
 
-            // Écouteur sur la barre de recherche
-            searchInput.addEventListener('input', function(e) {
-                filterOptions(e.target.value);
-            });
-            
-            // Empêcher la fermeture si on clique sur l'input
-            searchInput.addEventListener('click', function(e) {
-                e.stopPropagation();
+            document.onclick = (e) => { if (!wrapper.contains(e.target)) { wrapper.classList.remove('open'); qContainer.classList.remove('menu-open'); } };
+
+            document.querySelectorAll('.measure-length').forEach(path => {
+                path.style.setProperty('--length', path.getTotalLength());
             });
 
-            // Sélection d'une option
-            options.forEach(option => {
-                option.addEventListener('click', function() {
-                    const value = this.getAttribute('data-value');
-                    const text = this.innerText;
-
-                    // MAJ Visuelle
-                    triggerSpan.innerText = text;
-                    wrapper.classList.remove('open');
-                    
-                    options.forEach(opt => opt.classList.remove('selected'));
-                    this.classList.add('selected');
-
-                    // MAJ Données + Validation
-                    hiddenInput.value = value;
-                    checkInputs(3);
-                });
-            });
-
-            // --- 1. SETUP LOGOS (Calculs) ---
-            const paths = document.querySelectorAll('.measure-length');
-            paths.forEach(path => {
-                const length = path.getTotalLength();
-                path.style.setProperty('--length', length);
-            });
-
-            // --- 2. GESTION DU DÉMARRAGE ---
-            const overlay = document.getElementById('start-overlay');
-            const startBtn = document.getElementById('start-btn');
-            const audio = document.getElementById('introSound');
-
-            startBtn.addEventListener('click', function() {
-                if (audio) {
-                    audio.volume = 1.0;
-                    audio.play().catch(e => console.log("Erreur audio:", e));
-                }
-
-                overlay.style.opacity = '0';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 500);
-
+            document.getElementById('start-btn').onclick = function() {
+                const audio = document.getElementById('introSound');
+                if (audio) { audio.volume = 1.0; audio.play().catch(() => {}); }
+                document.getElementById('start-overlay').style.opacity = '0';
+                setTimeout(() => document.getElementById('start-overlay').style.display = 'none', 500);
                 document.body.classList.add('started');
-            });
+            };
         });
     </script>
 </body>
