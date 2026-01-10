@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Choisir votre Plan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: #F6F6F7;
+            color: #18181b;
+            min-height: 100vh;
+            padding: 16px 20px;
+            overflow-x: hidden;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto 20px;
+        }
+
+        .btn-header {
+            padding: 12px 24px;
+            background: white;
+            border: 1px solid #e4e4e7;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #71717a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-header:hover {
+            background: #fafafa;
+            border-color: #d4d4d8;
+        }
+
+        .btn-back {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            border: none;
+            background: transparent;
+            color: #18181b;
+            font-size: 15px;
+            padding: 12px 16px;
+        }
+
+        .btn-back span:first-child {
+            font-size: 20px;
+            line-height: 1;
+            margin-top: -2px;
+        }
+
+        .btn-back:hover {
+            background: transparent;
+            border: none;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 36px;
+            font-weight: 800;
+            margin-bottom: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #71717a;
+            font-size: 15px;
+            margin-bottom: 40px;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            display: none;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 14px 48px;
+            background: white;
+            border: 1px solid #e4e4e7;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #18181b;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .tab-btn.active {
+            background: white;
+            border-color: #18181b;
+            color: #18181b;
+        }
+
+        .tab-btn:not(.active) {
+            color: #71717a;
+            border-color: #e4e4e7;
+        }
+
+        .tab-btn:hover:not(.active) {
+            border-color: #d4d4d8;
+        }
+
+        .billing-toggle {
+            display: flex;
+            justify-content: center;
+            gap: 16px;
+            margin-bottom: 32px;
+        }
+
+        .billing-btn {
+            padding: 14px 48px;
+            background: white;
+            border: 1px solid #e4e4e7;
+            border-radius: 50px;
+            font-size: 15px;
+            font-weight: 600;
+            color: #71717a;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .billing-btn.active {
+            background: white;
+            border-color: #18181b;
+            color: #18181b;
+        }
+
+        .billing-btn:hover:not(.active) {
+            border-color: #d4d4d8;
+        }
+
+        .plans-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+            margin-bottom: 40px;
+        }
+
+        .plans-grid.single {
+            display: flex;
+            justify-content: center;
+        }
+
+        .plan-card {
+            background: white;
+            border: 1px solid #e4e4e7;
+            border-radius: 24px;
+            padding: 36px;
+            transition: all 0.3s;
+            max-width: 380px;
+        }
+
+        .plans-grid.single .plan-card {
+            max-width: 550px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .plans-grid {
+                justify-items: center;
+            }
+
+            .plan-card {
+                max-width: 100%;
+                width: 100%;
+            }
+
+            .plans-grid.single .plan-card {
+                max-width: 100%;
+                width: 100%;
+            }
+        }
+
+        .plan-card:hover {
+            border-color: #a1a1aa;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .plan-name {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .plan-description {
+            color: #71717a;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .plan-price {
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+            margin-bottom: 20px;
+        }
+
+        .price-amount {
+            font-size: 56px;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+        }
+
+        .price-period {
+            color: #71717a;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .subscribe-btn {
+            width: 100%;
+            padding: 14px;
+            background: #18181b;
+            color: white;
+            border: none;
+            border-radius: 16px;
+            font-size: 15px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 20px;
+        }
+
+        .subscribe-btn:hover {
+            background: #27272a;
+        }
+
+        .subscribe-btn:active {
+            transform: scale(0.98);
+        }
+
+        .features-title {
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 16px;
+        }
+
+        .features-list {
+            list-style: none;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 10px;
+            font-size: 14px;
+            color: #3f3f46;
+        }
+
+        .checkmark {
+            color: #6366f1;
+            font-weight: bold;
+            font-size: 20px;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <button class="btn-header btn-back" onclick="window.history.back()">
+            <span>‹</span>
+            <span>Retour</span>
+        </button>
+        <button class="btn-header" onclick="console.log('Déconnexion')">
+            Déconnexion
+        </button>
+    </div>
+
+    <div class="container">
+        <h1>Choisissez un plan d'abonnement :</h1>
+        <p class="subtitle">Simple, efficace et sans frais cachés. Choisissez l'offre qui vous ressemble.</p>
+
+        <div class="tabs">
+            <button class="tab-btn" onclick="switchTab('eco')" data-tab="eco">Éco</button>
+            <button class="tab-btn active" onclick="switchTab('normal')" data-tab="normal">Normal</button>
+            <button class="tab-btn" onclick="switchTab('entreprise')" data-tab="entreprise">Entreprise</button>
+        </div>
+
+        <div class="billing-toggle">
+            <button class="billing-btn active" onclick="switchBilling('monthly')" id="monthly-btn">Payer Mensuellement</button>
+            <button class="billing-btn" onclick="switchBilling('yearly')" id="yearly-btn">Payer Annuellement</button>
+        </div>
+
+        <div id="plans-container" class="plans-grid">
+            <!-- Plans will be injected here -->
+        </div>
+    </div>
+
+    <script>
+        let currentTab = 'normal';
+        let currentBilling = 'monthly';
+
+        const plansData = {
+            eco: [
+                {
+                    name: "Plan Éco",
+                    description: "Pour une utilisation basique",
+                    price: "9,99€",
+                    features: [
+                        "Usage individuel",
+                        "Support communautaire",
+                        "Accès aux outils de base",
+                        "500 requêtes / mois",
+                        "Synchronisation Cloud"
+                    ]
+                }
+            ],
+            normal: [
+                {
+                    name: "Plus",
+                    description: "Pour une utilisation régulière",
+                    price: "19,99€",
+                    features: [
+                        "Tout du plan Éco",
+                        "Support par email",
+                        "Vitesse x2",
+                        "Historique illimité",
+                        "Personnalisation UI"
+                    ]
+                },
+                {
+                    name: "Pro",
+                    description: "Pour une utilisation intensive",
+                    price: "39,99€",
+                    features: [
+                        "Tout du plan Plus",
+                        "Multi-utilisateurs",
+                        "Sécurité avancée",
+                        "API illimitée",
+                        "Statistiques Live"
+                    ]
+                },
+                {
+                    name: "Premium",
+                    description: "Pour une utilisation maximale",
+                    price: "59,99€",
+                    features: [
+                        "Accès Intégral",
+                        "Manager dédié",
+                        "Priorité absolue",
+                        "Conseils experts",
+                        "Formation sur mesure"
+                    ]
+                }
+            ],
+            entreprise: [
+                {
+                    name: "Pack 200",
+                    description: "Pour petites équipes",
+                    price: "200€",
+                    features: [
+                        "10 postes",
+                        "Support 24/7",
+                        "SSO inclus",
+                        "SLA 99.9%",
+                        "Migration offerte"
+                    ]
+                },
+                {
+                    name: "Pack 350",
+                    description: "Pour moyennes entreprises",
+                    price: "350€",
+                    features: [
+                        "50 postes",
+                        "Audit annuel",
+                        "Garantie panne",
+                        "Accès API VIP",
+                        "Tableau de bord RH"
+                    ]
+                },
+                {
+                    name: "Pack 500",
+                    description: "Pour grandes organisations",
+                    price: "500€",
+                    features: [
+                        "Postes illimités",
+                        "Dédié complet",
+                        "Expert sur site",
+                        "Cloud privé",
+                        "Contrat sur mesure"
+                    ]
+                }
+            ]
+        };
+
+        function switchTab(tab) {
+            currentTab = tab;
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-tab') === tab) {
+                    btn.classList.add('active');
+                }
+            });
+            renderPlans();
+        }
+
+        function switchBilling(type) {
+            currentBilling = type;
+            const monthlyBtn = document.getElementById('monthly-btn');
+            const yearlyBtn = document.getElementById('yearly-btn');
+            
+            if (type === 'monthly') {
+                monthlyBtn.classList.add('active');
+                yearlyBtn.classList.remove('active');
+            } else {
+                yearlyBtn.classList.add('active');
+                monthlyBtn.classList.remove('active');
+            }
+            renderPlans();
+        }
+
+        function renderPlans() {
+            const container = document.getElementById('plans-container');
+            const plans = plansData[currentTab];
+            const period = currentBilling === 'monthly' ? '/mois' : '/an';
+
+            if (plans.length === 1) {
+                container.className = 'plans-grid single';
+            } else {
+                container.className = 'plans-grid';
+            }
+
+            container.innerHTML = plans.map(plan => `
+                <div class="plan-card">
+                    <div class="plan-name">${plan.name}</div>
+                    <div class="plan-description">${plan.description}</div>
+                    <div class="plan-price">
+                        <span class="price-amount">${plan.price}</span>
+                        <span class="price-period">${period}</span>
+                    </div>
+                    <button class="subscribe-btn">S'abonner</button>
+                    <div class="features-title">Ce que vous obtenez :</div>
+                    <ul class="features-list">
+                        ${plan.features.map(feature => `
+                            <li class="feature-item">
+                                <span class="checkmark">✓</span>
+                                <span>${feature}</span>
+                            </li>
+                        `).join('')}
+                    </ul>
+                </div>
+            `).join('');
+        }
+
+        // Initialize
+        renderPlans();
+    </script>
+</body>
+</html>
