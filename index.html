@@ -1611,6 +1611,7 @@
         // Préchargement des images avec attente complète
         const preloadImages = () => {
             const loadPromises = [];
+            console.log(`Début du chargement de ${frameCount} images depuis le dossier: ${imageFolder}`);
 
             for (let i = 0; i < frameCount; i++) {
                 const img = new Image();
@@ -1619,8 +1620,16 @@
 
                 // Créer une promesse pour chaque image
                 const loadPromise = new Promise((resolve, reject) => {
-                    img.onload = () => resolve();
-                    img.onerror = () => reject(new Error(`Failed to load image ${frameIndex}`));
+                    img.onload = () => {
+                        if (i % 10 === 0) { // Afficher tous les 10 images
+                            console.log(`Chargement: ${i + 1}/${frameCount} images`);
+                        }
+                        resolve();
+                    };
+                    img.onerror = () => {
+                        console.error(`ERREUR: Impossible de charger ${imageFolder}/video_${frameIndex}.png`);
+                        reject(new Error(`Failed to load image ${frameIndex}`));
+                    };
                 });
 
                 loadPromises.push(loadPromise);
