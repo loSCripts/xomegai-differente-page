@@ -1608,15 +1608,27 @@
         const imageFolder = 'prosseceur'; // Nom du dossier corrigé selon l'explorateur (prosseceur)
         // Note: Si le dossier est "image_processeur", changez la variable ci-dessus.
 
-        // Préchargement des images
+        // Préchargement des images avec attente complète
         const preloadImages = () => {
+            const loadPromises = [];
+
             for (let i = 0; i < frameCount; i++) {
                 const img = new Image();
-                // Formatage du nom de fichier avec 3 chiffres (000, 001, ..., 081)
                 const frameIndex = i.toString().padStart(3, '0');
                 img.src = `${imageFolder}/video_${frameIndex}.png`;
+
+                // Créer une promesse pour chaque image
+                const loadPromise = new Promise((resolve, reject) => {
+                    img.onload = () => resolve();
+                    img.onerror = () => reject(new Error(`Failed to load image ${frameIndex}`));
+                });
+
+                loadPromises.push(loadPromise);
                 frames.push(img);
             }
+
+            // Retourner une promesse qui se résout quand toutes les images sont chargées
+            return Promise.all(loadPromises);
         };
 
         // Dessiner une image spécifique
@@ -1748,16 +1760,18 @@
             }
         };
 
-        // Initialisation
-        preloadImages();
-        window.addEventListener('resize', updateCanvasSize);
-        window.addEventListener('scroll', handleSequenceScroll);
-
-        // Premier rendu
-        frames[0].onload = () => {
+        // Initialisation avec attente du chargement
+        preloadImages().then(() => {
+            console.log('Toutes les images sont chargées !');
             updateCanvasSize();
             renderFrame(0);
-        };
+
+            // Activer le scroll seulement après le chargement
+            window.addEventListener('resize', updateCanvasSize);
+            window.addEventListener('scroll', handleSequenceScroll);
+        }).catch((error) => {
+            console.error('Erreur de chargement des images:', error);
+        });
     </script>
 </body>
 
