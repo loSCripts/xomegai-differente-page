@@ -687,7 +687,7 @@
             opacity: 0;
             transform: scale(0.9);
             transition: all 0.8s ease-out;
-            margin-bottom: 60px;
+            margin-bottom: 0;
         }
 
         .compact-models-table.visible {
@@ -800,15 +800,273 @@
             }
         }
 
+        /* Footer Styles */
+        .site-footer {
+            background: #f5f0e8;
+            padding: 60px 80px 30px;
+            border-top: 1px solid #e0d8cc;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-bottom: 40px;
+            border-bottom: 1px solid #e0d8cc;
+        }
+
+        .footer-brand {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .footer-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .footer-logo img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .footer-logo-text {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .footer-logo-name {
+            font-size: 16px;
+            font-weight: bold;
+            color: #333;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-logo-tagline {
+            font-size: 10px;
+            color: #666;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+
+        .footer-social a {
+            color: #333;
+            text-decoration: none;
+            font-size: 20px;
+            transition: opacity 0.2s;
+        }
+
+        .footer-social a:hover {
+            opacity: 0.6;
+        }
+
+        .footer-column {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-column h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .footer-column a {
+            font-size: 14px;
+            color: #666;
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: #333;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 25px;
+            text-align: center;
+        }
+
+        .footer-copyright {
+            font-size: 14px;
+            color: #666;
+        }
+
+        .footer-version {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .site-footer {
+                padding: 40px 20px 20px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 30px;
+            }
+
+            .footer-column {
+                align-items: center;
+                text-align: center;
+            }
+        }
+
         /* Flèche sous le tableau des modèles */
         .models-arrow {
             text-align: center;
-            margin: 40px 0;
+            margin: 0 0 40px 0;
         }
 
         .models-arrow img {
-            max-width: 100px;
+            max-width: 600px;
             height: auto;
+        }
+
+        /* Section Fonctionnalités avec scroll interactif */
+        .features-scroll-section {
+            min-height: 100vh;
+            background: #fcfaf7;
+            position: relative;
+        }
+
+        .features-container {
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            gap: 80px;
+        }
+
+        .features-image-container {
+            flex: 1;
+            height: 70vh;
+            position: relative;
+        }
+
+        .features-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 16px;
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .features-image-container img.active {
+            opacity: 1;
+        }
+
+        .features-text-container {
+            flex: 1;
+            max-width: 450px;
+            overflow: hidden;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .feature-item {
+            padding: 20px 0;
+            padding-left: 20px;
+            border-left: 3px solid transparent;
+            transition: border-color 0.3s ease;
+            cursor: pointer;
+        }
+
+        .feature-item:hover h2 {
+            color: #333333;
+        }
+
+        .feature-item.active {
+            border-left-color: #c9a86c;
+        }
+
+        /* Tous les titres h2 */
+        .feature-item h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #999999;
+            margin-bottom: 8px;
+            line-height: 1.3;
+            transition: color 0.3s ease;
+        }
+
+        .feature-item.active h2 {
+            color: #000000;
+            font-weight: 700;
+        }
+
+        /* Par défaut, tous les p sont cachés */
+        .feature-item p {
+            opacity: 0;
+            max-height: 0;
+            margin: 0;
+            overflow: hidden;
+            transition: opacity 0.4s ease;
+            font-size: 13px;
+            color: #555555;
+            line-height: 1.7;
+        }
+
+        /* Quand un item devient actif, son contenu s'affiche */
+        .feature-item.active p {
+            opacity: 1;
+            max-height: 500px;
+            margin-top: 10px;
+            margin-bottom: 8px;
+        }
+
+        /* Quand un item est "passed" (dépassé au scroll) */
+        .feature-item.collapsed h3,
+        .feature-item.collapsed p {
+            opacity: 0;
+            max-height: 0;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        /* Le dernier item garde son paragraphe visible */
+        .feature-item:last-child.collapsed p {
+            opacity: 1;
+            max-height: 1000px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 1024px) {
+            .features-container {
+                flex-direction: column;
+                padding: 40px 20px;
+                gap: 40px;
+            }
+
+            .features-image-container,
+            .features-text-container {
+                flex: none;
+                width: 100%;
+                height: 50vh;
+            }
         }
 
         /* Section Animation Processeur */
@@ -938,6 +1196,251 @@
 
             .sequence-feature p {
                 font-size: min(4vw, 16px);
+            }
+        }
+
+        /* ============================================= */
+        /* STYLES MOBILE (max-width: 768px) */
+        /* ============================================= */
+        @media (max-width: 768px) {
+
+            /* Masquer la sidebar et le floating container sur mobile */
+            .sidebar,
+            .floating-container {
+                display: none !important;
+            }
+
+            /* Masquer la bordure de page sur mobile */
+            body::before {
+                display: none;
+            }
+
+            /* Hero section - pleine largeur sans sidebar */
+            .hero-section {
+                width: 100%;
+            }
+
+            .intro-screen,
+            .final-screen {
+                width: 100%;
+                left: 0;
+                top: 0;
+                height: 100%;
+            }
+
+            /* Navigation simplifiée */
+            .top-navigation {
+                width: calc(100% - 20px);
+                padding: 0 10px;
+                gap: 10px;
+                height: 50px;
+            }
+
+            .nav-center {
+                display: none;
+            }
+
+            .nav-brand-tagline {
+                display: none;
+            }
+
+            .nav-brand-name {
+                font-size: 13px;
+            }
+
+            .nav-logo img {
+                max-width: 24px;
+                max-height: 24px;
+            }
+
+            .nav-button {
+                padding: 6px 12px;
+                font-size: 11px;
+            }
+
+            /* Masquer le frame rectangle sur mobile */
+            .frame-rectangle {
+                display: none;
+            }
+
+            /* Masquer le logo au-dessus du frame */
+            .frame-logo {
+                display: none;
+            }
+
+            /* Adapter le container principal */
+            .container {
+                width: 100%;
+            }
+
+            /* Section bottom adaptée */
+            .bottom-section {
+                bottom: 20px;
+                gap: 10px;
+            }
+
+            .pricing-text {
+                font-size: 16px;
+                text-align: center;
+                padding: 0 20px;
+            }
+
+            .continue-button {
+                padding: 14px 40px;
+                font-size: 16px;
+            }
+
+            /* Intro et final text */
+            .intro-text,
+            .final-text {
+                font-size: min(6vw, 28px);
+                padding: 15px;
+            }
+
+            /* Section Modèles */
+            .models-section {
+                padding: 40px 15px 30px;
+            }
+
+            .models-header h2 {
+                font-size: min(8vw, 32px);
+            }
+
+            .models-header p {
+                font-size: min(4vw, 16px);
+            }
+
+            .compact-models-table {
+                padding: 15px;
+                border-radius: 15px;
+            }
+
+            .models-compact-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .compact-model-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .compact-model-name {
+                font-size: 9px;
+            }
+
+            .models-arrow img {
+                max-width: 90%;
+            }
+
+            /* Section Features - empilée verticalement */
+            .features-scroll-section {
+                min-height: auto;
+            }
+
+            .features-container {
+                flex-direction: column;
+                padding: 30px 15px;
+                gap: 20px;
+                height: auto;
+                position: relative;
+            }
+
+            .features-image-container {
+                height: 35vh;
+                width: 100%;
+                border-radius: 12px;
+                overflow: hidden;
+            }
+
+            .features-text-container {
+                width: 100%;
+                max-width: 100%;
+                padding: 15px;
+                height: auto;
+            }
+
+            .feature-item {
+                padding: 15px 0;
+                padding-left: 15px;
+            }
+
+            .feature-item h2 {
+                font-size: 15px;
+            }
+
+            .feature-item p {
+                font-size: 12px;
+            }
+
+            /* Section Processeur/Sequence */
+            .sequence-section {
+                height: 400vh;
+            }
+
+            .sequence-overlay {
+                padding: 20px 15px;
+            }
+
+            .sequence-title {
+                font-size: min(7vw, 28px);
+                margin-bottom: 20px;
+            }
+
+            .sequence-content {
+                gap: 15px;
+            }
+
+            .sequence-feature {
+                margin-left: 0;
+                padding: 15px 18px;
+                border-radius: 15px;
+            }
+
+            .sequence-feature h3 {
+                font-size: min(5vw, 18px);
+                margin-bottom: 8px;
+            }
+
+            .sequence-feature p {
+                font-size: min(4vw, 14px);
+            }
+
+            /* Footer */
+            .site-footer {
+                padding: 30px 15px 20px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 25px;
+                padding-bottom: 25px;
+            }
+
+            .footer-brand {
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-column {
+                align-items: center;
+                text-align: center;
+            }
+
+            .footer-column h4 {
+                font-size: 14px;
+            }
+
+            .footer-column a {
+                font-size: 12px;
+            }
+
+            .footer-copyright {
+                font-size: 12px;
+            }
+
+            .footer-version {
+                font-size: 10px;
             }
         }
     </style>
@@ -1169,6 +1672,46 @@
         </div>
     </section>
 
+    <!-- Section Fonctionnalités avec scroll interactif -->
+    <section class="features-scroll-section">
+        <div class="features-container">
+            <!-- Images à gauche (fixes) -->
+            <div class="features-image-container">
+                <img src="feature1.jpg" alt="Feature 1" class="feature-image active" data-feature="0">
+                <img src="feature2.jpg" alt="Feature 2" class="feature-image" data-feature="1">
+                <img src="feature3.jpg" alt="Feature 3" class="feature-image" data-feature="2">
+            </div>
+
+            <!-- Texte à droite (scrollable) -->
+            <div class="features-text-container" id="featuresTextContainer">
+                <div class="feature-item" data-feature="0">
+                    <h2>Input Anything: World's First Unified Multimodal Video Model</h2>
+                    <p>The Kling O1 Video Model marks an industry first by integrating diverse video tasks into a single
+                        unified architecture. Capabilities include Image-based Generation, Text-to-Video, Keyframe
+                        Interpolation (Start/End Frame), Video Inpainting, Transformation, Stylization, and Video
+                        Extension.</p>
+                </div>
+
+                <div class="feature-item" data-feature="1">
+                    <h2>Understand Everything: Multimodal Input, All-in-one Creation & Modification</h2>
+                    <p>With the model's deep semantic understanding, everything — including images, videos, elements,
+                        texts, etc. — could be included in your input to Kling O1. The model goes beyond the limitations
+                        of modality, integrating and understanding different perspectives of an image, video, or
+                        character you upload, to return outputs with precision.</p>
+                </div>
+
+                <div class="feature-item" data-feature="2">
+                    <h2>All-In-One Reference: Video Consistency Now Resolved</h2>
+                    <p>Kling O1 comes with enhanced capabilities to understand image and video inputs better, and
+                        supports the building of elements with images from multiple angles. With reference
+                        images/elements, Kling O1 can remember your characters, props, scenes, etc. just like a human
+                        director, to maintain consistency, accuracy and continuity regardless of how the camera moves or
+                        how the scene develops.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Nouvelle Section Animation Scroll Processeur -->
     <section class="sequence-section" id="sequenceSection">
         <div class="sequence-sticky-container">
@@ -1194,6 +1737,50 @@
             </div>
         </div>
     </section>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+        <div class="footer-content">
+            <!-- Colonne marque avec logo et réseaux sociaux -->
+            <div class="footer-brand">
+                <div class="footer-logo">
+                    <img src="mammouth.svg" alt="Mammouth Logo">
+                    <div class="footer-logo-text">
+                        <span class="footer-logo-name">MAMMOUTH</span>
+                        <span class="footer-logo-tagline">Évitez l'extinction</span>
+                    </div>
+                </div>
+                <div class="footer-social">
+                    <a href="#" aria-label="LinkedIn">in</a>
+                    <a href="#" aria-label="Twitter">𝕏</a>
+                    <a href="#" aria-label="YouTube">▶</a>
+                    <a href="#" aria-label="Discord">🎮</a>
+                </div>
+            </div>
+
+            <!-- Colonne Blog -->
+            <div class="footer-column">
+                <h4>Blog</h4>
+                <a href="#">Téléchargez l'application sur n'importe quel appareil</a>
+                <a href="#">Présentation de l'indice de popularité des LLMs</a>
+                <a href="#">Obtenez le meilleur de votre prompt</a>
+            </div>
+
+            <!-- Colonne Entreprise -->
+            <div class="footer-column">
+                <h4>Entreprise</h4>
+                <a href="#">À propos de nous</a>
+                <a href="#">Politique de confidentialité</a>
+                <a href="#">CGU</a>
+                <a href="#">Mentions légales</a>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p class="footer-copyright">© 2025 Mammouth AI. Tous droits réservés.</p>
+            <p class="footer-version">version 38aca0d</p>
+        </div>
+    </footer>
 
     <script>
         // Système de particules flottantes
@@ -1229,7 +1816,7 @@
         createParticles();
 
         function handleScrollAnimations() {
-            const elements = document.querySelectorAll('.models-header, .compact-models-table');
+            const elements = document.querySelectorAll('.models-header, .compact-models-table, .models-arrow');
 
             elements.forEach(el => {
                 const rect = el.getBoundingClientRect();
@@ -1798,6 +2385,82 @@
         }).catch((error) => {
             console.error('Erreur de chargement des images:', error);
         });
+
+        // Gestion du scroll interactif pour la section fonctionnalités
+        const featuresTextContainer = document.getElementById('featuresTextContainer');
+        const featureImages = document.querySelectorAll('.feature-image');
+        const featureItems = document.querySelectorAll('.feature-item');
+        let currentIndex = 0;
+        let lastScrollTime = 0;
+        const scrollDelay = 500; // Délai en ms entre les changements
+
+        // Activer le premier item par défaut
+        if (featureItems.length > 0) {
+            featureItems[0].classList.add('active');
+        }
+
+        if (featuresTextContainer && featureImages.length > 0) {
+            // Détecter le scroll de la souris
+            featuresTextContainer.addEventListener('wheel', (e) => {
+                e.preventDefault();
+
+                const now = Date.now();
+                // Vérifier si assez de temps s'est écoulé depuis le dernier changement
+                if (now - lastScrollTime < scrollDelay) {
+                    return;
+                }
+
+                // Scroll vers le bas
+                if (e.deltaY > 0 && currentIndex < featureItems.length - 1) {
+                    currentIndex++;
+                    lastScrollTime = now;
+                }
+                // Scroll vers le haut
+                else if (e.deltaY < 0 && currentIndex > 0) {
+                    currentIndex--;
+                    lastScrollTime = now;
+                }
+
+                // Mettre à jour l'affichage
+                featureItems.forEach((item, index) => {
+                    if (index === currentIndex) {
+                        item.classList.add('active');
+                    } else {
+                        item.classList.remove('active');
+                    }
+                });
+
+                // Changer l'image
+                featureImages.forEach(img => img.classList.remove('active'));
+                const activeImage = document.querySelector(`.feature-image[data-feature="${currentIndex}"]`);
+                if (activeImage) {
+                    activeImage.classList.add('active');
+                }
+            });
+
+            // Ajouter le clic sur les titres
+            featureItems.forEach((item, index) => {
+                item.addEventListener('click', () => {
+                    currentIndex = index;
+
+                    // Mettre à jour l'affichage
+                    featureItems.forEach((el, i) => {
+                        if (i === currentIndex) {
+                            el.classList.add('active');
+                        } else {
+                            el.classList.remove('active');
+                        }
+                    });
+
+                    // Changer l'image
+                    featureImages.forEach(img => img.classList.remove('active'));
+                    const activeImg = document.querySelector(`.feature-image[data-feature="${currentIndex}"]`);
+                    if (activeImg) {
+                        activeImg.classList.add('active');
+                    }
+                });
+            });
+        }
     </script>
 </body>
 
